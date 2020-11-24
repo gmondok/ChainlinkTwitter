@@ -6,7 +6,7 @@ contract ChainlinkTwitter is ChainlinkClient {
     address private oracle;
     bytes32 private jobId;
     uint256 private fee;
-    uint public statusCode;
+    uint256 public statusCode;
     
     //only the contract owner should be able to tweet
     address payable owner;
@@ -28,12 +28,12 @@ contract ChainlinkTwitter is ChainlinkClient {
     	Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
     	//req.add("endpoint", "https://api.twitter.com/1.1/statuses/update.json");
     	req.add("status", twt);
-    	req.add("path", "statusCode")
+    	req.add("copyPath", "statusCode")
     	sendChainlinkRequestTo(oracle, req, fee);
     }
     
     //callback function
-    function fulfill(bytes32 _requestId, uint _statusCode) public recordChainlinkFulfillment(_requestId) {
+    function fulfill(bytes32 _requestId, uint256 _statusCode) public recordChainlinkFulfillment(_requestId) {
     	statusCode = _statusCode;
     }
 }
